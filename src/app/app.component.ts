@@ -5,7 +5,12 @@ import { MenuComponent } from './menu.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  template: ` <app-menu /> `,
+  template: `
+    <div class="flex gap-8">
+      <app-menu />
+      <router-outlet></router-outlet>
+    </div>
+  `,
   imports: [RouterOutlet, MenuComponent],
 })
 export class AppComponent {
