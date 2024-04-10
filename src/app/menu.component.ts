@@ -15,29 +15,17 @@ import { MenuNode } from './menu-node.type';
   selector: 'app-menu',
   imports: [CdkTreeModule, RouterLink, RouterLinkActive],
   template: `
-    <cdk-tree
-      [dataSource]="menu"
-      [treeControl]="menuControl"
-      class="grid gap-2"
-    >
+    <cdk-tree [dataSource]="menu" [treeControl]="menuControl">
       <cdk-tree-node
-        class="w-full"
         *cdkTreeNodeDef="let node"
         [style.display]="shouldDisplay(node) ? 'block' : 'none'"
       >
         @if(node.type === 'menu-label') {
-        <button
-          class="text-left hover:bg-slate-300 px-4 py-2 block w-full"
-          (click)="node.isExpanded = !node.isExpanded"
-        >
+        <button (click)="node.isExpanded = !node.isExpanded">
           {{ node.text }}
         </button>
         } @else if(node.type === 'menu-link') {
-        <a
-          [routerLink]="node.path"
-          class="hover:bg-slate-300 px-4 py-2 block w-full"
-          routerLinkActive="text-blue-500 bg-blue-100"
-        >
+        <a [routerLink]="node.path">
           {{ node.text }}
         </a>
         }
