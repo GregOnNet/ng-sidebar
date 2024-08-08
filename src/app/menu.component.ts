@@ -42,12 +42,14 @@ export class MenuComponent implements OnInit {
     (node) => node.type === 'menu-label' && node.isExpandable
   );
 
-  getParentNode(node: MenuNode) {
-    const nodeIndex = this.menu.indexOf(node);
+  findParentNode(currentNode: MenuNode): MenuNode | null {
+    const nodeIndex = this.menu.indexOf(currentNode);
 
     for (let i = nodeIndex - 1; i >= 0; i--) {
-      if (this.menu[i].level === node.level - 1) {
-        return this.menu[i];
+      const previousNode = this.menu[i];
+
+      if (previousNode.level === currentNode.level - 1) {
+        return previousNode;
       }
     }
 
@@ -55,12 +57,12 @@ export class MenuComponent implements OnInit {
   }
 
   shouldDisplay(node: MenuNode) {
-    let parent = this.getParentNode(node);
+    let parent = this.findParentNode(node);
     while (parent) {
       if (parent.type === 'menu-link' || !parent.isExpanded) {
         return false;
       }
-      parent = this.getParentNode(parent);
+      parent = this.findParentNode(parent);
     }
     return true;
   }
@@ -80,7 +82,7 @@ export class MenuComponent implements OnInit {
 
           if (!menuNode) return;
 
-          let menuNodeParent = this.getParentNode(menuNode);
+          let menuNodeParent = this.findParentNode(menuNode);
           while (menuNodeParent) {
             menuNodeParent.type === 'menu-label' && menuNodeParent.isExpandable
               ? (menuNodeParent.isExpanded = true)
@@ -88,7 +90,7 @@ export class MenuComponent implements OnInit {
 
             if (menuNodeParent.level === 0) return;
 
-            menuNodeParent = this.getParentNode(menuNodeParent);
+            menuNodeParent = this.findParentNode(menuNodeParent);
           }
         }),
         first()
